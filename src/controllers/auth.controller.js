@@ -9,7 +9,14 @@ export const getUsers = async (req, res, page) => {
   try {
     const page = req.query.page || 1;
     const users = await managerUser.getElements(page);
-    res.send(users);
+    const parsedUsers = users.docs.map((user) => {
+      return {
+        first_name: user.first_name,
+        email: user.email,
+        role: user.isadmin ? "Admin" : "User",
+      };
+    });
+    res.status(200).send({ status: "success", data: parsedUsers });
   } catch (e) {
     res.status(500).send({ status: "error", message: "Internal Server Error" });
   }
@@ -75,3 +82,18 @@ export const getUserEmail = async (userId) => {
   const user = await managerUser.getElementById(userId);
   return user.email;
 };
+
+export const getUserCartID = async (userId) => {
+  const user = await managerUser.getElementById(userId);
+  return user.id_cart;
+};
+
+
+export const logoutUser = async (req, res) => {
+  try {
+    res.clearCookie("jwt");
+    res.status(200).send({ status: "success", message: "Session destroyed" });
+  } catch (error) {
+    res.status(500).send({ status: "error", message: "Internal Server Error" });
+  }
+}
