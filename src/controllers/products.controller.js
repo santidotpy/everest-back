@@ -94,8 +94,9 @@ export const deleteProduct = async (req, res) => {
 
 // actualizar un producto
 export const updateProduct = async (req, res) => {
-  const { id } = req.query;
+  //const { id } = req.query;
   const {
+    id,
     productName,
     description,
     code,
