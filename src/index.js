@@ -132,7 +132,7 @@ app.use(routerMsg);
 app.use("/api", routerProd);
 app.use("/api", routerCart);
 app.use("/tickets", routerTicket);
-app.use("/auth", routerAuth);
+app.use("/api", routerAuth);
 app.use("/auth", routerGH);
 app.use("*", (req, res) => {
   res.status(404).send({ status: "error", message: "Not found" });
