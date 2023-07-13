@@ -7,7 +7,7 @@ import {
   buyProducts,
   getProductData,
 } from "./products.controller.js";
-import { getUserEmail } from "./auth.controller.js";
+import { getUserEmail, getUserCartID } from "./auth.controller.js";
 import { generateReceipt } from "../services/receipt.service.js";
 import { sendEmail } from "../services/email.service.js";
 
@@ -61,8 +61,12 @@ export const getCartContent = async (req, res) => {
 };
 
 export const addProductToCart = async (req, res) => {
-  const { id_cart } = req.query;
-  const { id_prod, quantity } = req.body;
+  const token = getToken(req);
+  const userID = decodeToken(token).payload.user.id;
+  const id_cart = await getUserCartID(userID);
+
+  // const { id_cart } = req.query;
+  const { id_prod, quantity } = req.query;
 
   try {
     const respuesta = await managerCart.addProductCart(
@@ -70,8 +74,10 @@ export const addProductToCart = async (req, res) => {
       id_prod,
       quantity
     );
-
-    return res.status(200).json(respuesta);
+      res.status(200).json({
+        message: "Product added to cart",
+        response: respuesta,
+      });
   } catch (error) {
     res.status(500).json({
       message: error.message,
