@@ -1,7 +1,11 @@
 import { Router } from "express";
 import passport from "passport";
 import { passportError, authorization } from "../utils/messageError.js";
-import { getUsers, loginValidation } from "../controllers/auth.controller.js";
+import {
+  getUsers,
+  loginValidation,
+  logoutUser,
+} from "../controllers/auth.controller.js";
 
 const routerAuth = Router();
 
@@ -25,21 +29,35 @@ routerAuth.get("/login", (req, res) => {
   }
 });
 
-routerAuth.post("/login", loginValidation);
+routerAuth.post("/session/login", loginValidation);
 
-routerAuth.get("/logout", (req, res) => {
-  if (req.session.login) {
-    req.session.destroy(() => {
-      console.log("Session destroyed");
-      res.redirect("../");
-    });
-    return;
-  }
+routerAuth.get("/session/logout", logoutUser);
+//  (req, res) => {
 
-  res.redirect("../");
-});
+// console.log(req.session);
+// req.session.destroy((err) => {
+//   if (err) {
+//     console.log('Error destroying session:', err);
+//     return res.status(500).send({ status: 'error', message: 'Internal Server Error' });
+//   }
 
-routerAuth.get("/users", getUsers);
+//   res.clearCookie('connect.sid');
+//   res.send({ status: 'success', message: 'Session destroyed' });
+// });
+
+// if (req.session.login) {
+//   req.session.destroy(() => {
+//     console.log("Session destroyed");
+//     res.send({ status: "success", message: "Session destroyed" });
+//     //res.redirect("../");
+//   });
+//   return;
+// }
+// res.send({ status: "error", message: "No session" });
+//res.redirect("../");
+// });
+
+routerAuth.get("/users", passportError("jwt"), authorization(), getUsers);
 
 routerAuth.get(
   "/testJWT",
@@ -51,7 +69,7 @@ routerAuth.get(
 );
 
 routerAuth.get(
-  "/current",
+  "/session/current",
   passportError("jwt"),
   authorization(),
   async (req, res) => {

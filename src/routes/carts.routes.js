@@ -34,7 +34,8 @@ routerCart.get(
 
 // POST para agregar productos al carrito - deprecado
 routerCart.post(
-  "/add-to-cart",
+  // "/add-to-cart",
+  "/carts/product",
   passportError("jwt"),
   authorizationUser(),
   addProductToCart
