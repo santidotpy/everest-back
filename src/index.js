@@ -5,6 +5,7 @@ import { Server } from "socket.io";
 import __dirname from "./path.js";
 import path, { format } from "path";
 
+import cors from "cors";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
 import session from "express-session";
@@ -24,10 +25,25 @@ import { winstonLogger } from "./utils/logger.js";
 
 // inicializaciones
 const app = express();
+
+const whiteList = ["http://localhost:8080"]; //Rutas validas a mi servidor
+
+const corsOptions = {
+  //Reviso si el cliente que intenta ingresar a mi servidor esta o no en esta lista
+  origin: (origin, callback) => {
+    if (whiteList.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by Cors"));
+    }
+  },
+};
+
 const managerMessage = new MessageMongo();
 
 app.set("port", process.env.PORT || 5000);
 app.use(express.json());
+app.use(cors(corsOptions));
 
 // COOKIES
 app.use(cookieParser(process.env.PRIVATE_KEY_JWT));
