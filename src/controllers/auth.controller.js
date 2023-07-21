@@ -70,7 +70,7 @@ const validateToken = async (req, res, next) => {
 
 const generateToken = (userId) => {
   return jwt.sign({ user: { id: userId } }, process.env.PRIVATE_KEY_JWT, {
-    expiresIn: "1h",
+    expiresIn: "8h",
   });
 };
 
