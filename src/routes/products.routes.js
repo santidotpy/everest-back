@@ -2,6 +2,7 @@ import { Router } from "express";
 import { passportError, authorization } from "../utils/messageError.js";
 import {
   getProducts,
+  getProductById,
   addProduct,
   deleteProduct,
   updateProduct,
@@ -13,6 +14,9 @@ import { validateProduct } from "../middlewares/validations.js";
 const routerProd = Router();
 
 routerProd.get("/products", getProducts);
+
+// obtener un producto por id
+routerProd.get("/product", getProductById);
 
 // obtener productos en formato json
 routerProd.get("/products-json", getProductsJSON);

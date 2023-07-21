@@ -14,7 +14,6 @@ export const getProducts = async (req, res) => {
     const products = await managerProduct.getElements(page, limit, sort);
     res.status(200).json(products);
 
-   
     // res.render("products/all-products", {
     //   // cambiara con el uso del front
     //   title: "Products",
@@ -24,6 +23,19 @@ export const getProducts = async (req, res) => {
     //   totalPages: products.totalPages,
     //   welcome,
     // });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+// obtener un producto por id
+export const getProductById = async (req, res) => {
+  const { id } = req.query;
+  try {
+    const product = await managerProduct.getElementById(id);
+    res.status(200).json(product);
   } catch (error) {
     res.status(500).json({
       message: error.message,
