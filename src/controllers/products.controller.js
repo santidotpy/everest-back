@@ -95,7 +95,7 @@ export const deleteProduct = async (req, res) => {
   try {
     await managerProduct.deleteElement(id);
     res.status(200).json({
-      message: `Product ${id} deleted successfully`,
+      message: `Product ${id} successfully deleted`,
     });
   } catch (error) {
     res.status(500).json({
