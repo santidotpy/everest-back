@@ -74,10 +74,10 @@ export const addProductToCart = async (req, res) => {
       id_prod,
       quantity
     );
-      res.status(200).json({
-        message: "Product added to cart",
-        response: respuesta,
-      });
+    res.status(200).json({
+      message: "Product added to cart",
+      response: respuesta,
+    });
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -86,12 +86,15 @@ export const addProductToCart = async (req, res) => {
 };
 
 export const emptyCart = async (req, res) => {
-  const { cartId } = req.query;
-  console.log(cartId);
+  const token = getToken(req);
+  const userId = decodeToken(token).payload.user.id;
+  const cartId = await getUserCartID(userId);
+  // const { cartId } = req.query;
+  // console.log(cartId);
   try {
     const deletedCart = await managerCart.deleteProductsCart(cartId);
     if (deletedCart) {
-      console.log(`Cart ${cartId} emptied`);
+      //console.log(`Cart ${cartId} emptied`);
       return res.status(200).json({
         message: "Cart emptied",
       });
@@ -108,11 +111,38 @@ export const emptyCart = async (req, res) => {
 
 // actualizar productos del carrito
 export const updateProductCart = async (req, res) => {
-  const { id } = req.query;
-  const { id_prod, cant } = req.body;
+  //const { id } = req.query;
+  const token = getToken(req);
+  const userId = decodeToken(token).payload.user.id;
+  const id = await getUserCartID(userId);
+
+  const { id_prod, quantity } = req.body;
 
   try {
-    const respuesta = await managerCart.updateProduct(id, id_prod, cant);
+    // const respuesta = await managerCart.updateProduct(id, id_prod, cant);
+    const newData = { id_prod, quantity };
+    await managerCart.updateProductCart(id, newData);
+    const respuesta = await managerCart.getElementById(id);
+
+    return res.status(200).json(respuesta);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const updateProductsCart = async (req, res) => {
+  const token = getToken(req);
+  const userId = decodeToken(token).payload.user.id;
+  const id = await getUserCartID(userId);
+
+  const cartContent = req.body;
+  console.log(cartContent);
+
+  try {
+    await managerCart.updateProductsCart(id, cartContent);
+    const respuesta = await managerCart.getElementById(id);
 
     return res.status(200).json(respuesta);
   } catch (error) {
@@ -146,7 +176,12 @@ export const deleteProductCart = async (req, res) => {
 
 export const deleteProductFromCart = async (req, res) => {
   try {
-    const { id, id_prod } = req.query;
+    const token = getToken(req);
+    const userId = decodeToken(token).payload.user.id;
+    const id = await getUserCartID(userId);
+
+    // const { id, id_prod } = req.query;
+    const { id_prod } = req.query;
 
     await managerCart.deleteProductFromCart(id, id_prod);
     const cart = await managerCart.getElementById(id);
@@ -177,7 +212,9 @@ export const checkout = async (req, res) => {
     const userId = decodeToken(token).payload.user.id;
     const email = await getUserEmail(userId);
 
-    const { id } = req.query;
+    //const { id } = req.query; // cart id
+    const id = await getUserCartID(userId); // cart id
+
     let cart = await managerCart.getElementById(id);
 
     let outOfStockProducts = [];
