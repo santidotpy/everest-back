@@ -92,6 +92,7 @@ export const getUserCartID = async (userId) => {
 export const logoutUser = async (req, res) => {
   try {
     res.clearCookie("jwt");
+    await req.session.destroy();
     res.status(200).send({ status: "success", message: "Session destroyed" });
   } catch (error) {
     res.status(500).send({ status: "error", message: "Internal Server Error" });
