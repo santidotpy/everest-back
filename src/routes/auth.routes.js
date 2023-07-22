@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import { passportError, authorization } from "../utils/messageError.js";
+import { validateRegistration } from "../middlewares/validations.js";
 import {
   getUsers,
   loginValidation,
@@ -14,7 +15,8 @@ routerAuth.get("/signup", (req, res) => {
 });
 
 routerAuth.post(
-  "/signup",
+  "/session/register",
+  validateRegistration,
   passport.authenticate("register"),
   async (req, res) => {
     res.send({ status: "success", message: "User successfully created" });
@@ -30,6 +32,8 @@ routerAuth.get("/login", (req, res) => {
 });
 
 routerAuth.post("/session/login", loginValidation);
+
+//routerAuth.post("/session/login/callback/credentials", loginValidation);
 
 routerAuth.get("/session/logout", logoutUser);
 //  (req, res) => {
@@ -73,6 +77,7 @@ routerAuth.get(
   passportError("jwt"),
   authorization(),
   async (req, res) => {
+    console.log(req)
     const username = req.user.first_name;
     res.send({ message: `Welcome ${username}` });
   }

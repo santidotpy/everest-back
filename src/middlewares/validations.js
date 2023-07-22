@@ -23,3 +23,28 @@ export const validateProduct = (req, res, next) => {
 
   next();
 };
+
+export const validateRegistration = (req, res, next) => {
+  const requiredFields = [
+    "first_name",
+    "last_name",
+    "email",
+    "password",
+    "age",
+  ];
+  const missingFields = [];
+
+  for (const field of requiredFields) {
+    if (!req.body[field]) {
+      missingFields.push(field);
+    }
+  }
+
+  // si hay algun capmpo faltante, retorno 400 con un mensaje de error
+  if (missingFields.length > 0) {
+    const errorMessage = `Missing fields: ${missingFields.join(", ")}`;
+    return res.status(400).json({ message: errorMessage });
+  }
+
+  next();
+};
