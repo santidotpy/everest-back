@@ -11,6 +11,7 @@ import {
   addProductToCart,
   emptyCart,
   updateProductCart,
+  updateProductsCart,
   deleteProductCart,
   deleteProductFromCart,
   checkout,
@@ -51,10 +52,17 @@ routerCart.delete(
 
 // // PUT para actualizar productos del carrito
 routerCart.put(
-  "/cart/:cid/product",
+  "/carts/product",
   passportError("jwt"),
   authorizationUser(),
   updateProductCart
+);
+
+routerCart.put(
+  "/carts",
+  passportError("jwt"),
+  authorizationUser(),
+  updateProductsCart
 );
 
 // // DELETE para eliminar productos del carrito
@@ -67,7 +75,7 @@ routerCart.delete(
 
 // DELETE para eliminar productos del carrito - cool
 routerCart.delete(
-  "/cart/product",
+  "/carts/product",
   passportError("jwt"),
   authorizationUser(),
   deleteProductFromCart
