@@ -13,7 +13,7 @@ const transporter = nodeMailer.createTransport({
 
 export const sendEmail = async (email, receipt) => {
   const mailOptions = {
-    from: process.env.APP_MAIL_SENDER,
+    from: process.env.TESTING_EMAIL,
     to: email,
     subject: "Your Purchase Receipt",
     text: receipt,
