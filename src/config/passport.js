@@ -52,7 +52,9 @@ const initializePassport = (passport) => {
       const user = await managerUser.getUserByEmail(mail);
       if (user) {
         console.log("User already exists");
-        return done(null, false);
+        return done(null, false, 
+          // { message: "User already exists" }
+          );
       }
       const passwordHash = createHash(password);
 
