@@ -69,6 +69,13 @@ export const addProductToCart = async (req, res) => {
   const { id_prod, quantity } = req.query;
 
   try {
+    //check stock before adding product to cart
+    const stock = await checkStock(id_prod, quantity);
+    if (!stock) {
+      return res.status(200).json({
+        message: "Product out of stock",
+      });
+    }
     const respuesta = await managerCart.addProductCart(
       id_cart,
       id_prod,
