@@ -97,11 +97,9 @@ export const emptyCart = async (req, res) => {
   const userId = decodeToken(token).payload.user.id;
   const cartId = await getUserCartID(userId);
   // const { cartId } = req.query;
-  // console.log(cartId);
   try {
     const deletedCart = await managerCart.deleteProductsCart(cartId);
     if (deletedCart) {
-      //console.log(`Cart ${cartId} emptied`);
       return res.status(200).json({
         message: "Cart emptied",
       });
@@ -230,7 +228,6 @@ export const checkout = async (req, res) => {
     await Promise.all(
       cart.products.map(async (prod) => {
         const stock = await checkStock(prod.id_prod, prod.quantity);
-        console.log(stock);
         if (!stock) {
           console.log(`Product ${prod.id_prod} out of stock`);
           await managerCart.deleteProductFromCart(id, prod.id_prod);
@@ -262,13 +259,11 @@ export const checkout = async (req, res) => {
     const totalAmount = prices.reduce((acc, price) => acc + price, 0);
 
     // Buy the products
-    //console.log(cart.products)
     const successfulPurchase = await buyProducts(cart.products);
     if (successfulPurchase) {
       const productData = await getProductData(cart.products);
       const receipt = generateReceipt(productData, totalAmount, email);
       console.log("Successful purchase");
-      //console.log(receipt);
       sendEmail(email, receipt); // notify user
     }
 

@@ -59,8 +59,6 @@ export class CartMongo extends mongoManager {
     return true;
   }
 
-  
-
   async updateProductCart(id, data) {
     // update product quantity
     super.connect();
