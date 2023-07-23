@@ -4,16 +4,16 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const transporter = nodeMailer.createTransport({
-  service: "gmail",
+  service: process.env.MAILING_SERVICE_PROVIDER,
   auth: {
-    user: process.env.TESTING_EMAIL,
-    pass: process.env.TESTING_EMAIL_PASSWORD,
+    user: process.env.MAILING_SERVICE_EMAIL,
+    pass: process.env.MAILING_SERVICE_PASSWORD,
   },
 });
 
 export const sendEmail = async (email, receipt) => {
   const mailOptions = {
-    from: process.env.TESTING_EMAIL,
+    from: process.env.MAILING_SERVICE_EMAIL,
     to: email,
     subject: "Your Purchase Receipt",
     text: receipt,
