@@ -59,17 +59,7 @@ export class CartMongo extends mongoManager {
     return true;
   }
 
-  // async updateProductCart(id, ...data) {
-  //   super.connect();
-  //   console.log(data);
-  //   const carrito = await this.model.findById(id);
-  //   console.log(carrito);
-  //   const aux = { ...data };
-  //   carrito.products.findIndex((prod) => prod._id == id);
-  //   carrito[index] = aux;
-  //   carrito.save();
-  //   return true;
-  // }
+  
 
   async updateProductCart(id, data) {
     // update product quantity

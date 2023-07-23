@@ -71,25 +71,4 @@ export const generateReceipt = (products, total, email) => {
   return output;
 };
 
-// const ticket = generateReceipt(
-//   [
-//     {
-//       name: "Coca Cola",
-//       quantity: 2,
-//       price: 1.5,
-//     },
-//     {
-//       name: "Fanta",
-//       quantity: 1,
-//       price: 1.5,
-//     },
-//     {
-//       name: "Sprite",
-//       quantity: 1,
-//       price: 1.5,
-//     },
-//   ],
-//   6
-// );
 
-// console.log(ticket);

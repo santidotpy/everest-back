@@ -29,7 +29,6 @@ const initializePassport = (passport) => {
       if (validatePassword(password, user.password)) {
         //Usuario y contraseña validos
         const token = generateToken({ user });
-        console.log({ token });
         // const token = generateToken(user.toJSON()); // dos maneras de hacerlo
         return done(null, user);
       }

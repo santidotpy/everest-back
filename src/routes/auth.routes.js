@@ -36,30 +36,6 @@ routerAuth.post("/session/login", loginValidation);
 //routerAuth.post("/session/login/callback/credentials", loginValidation);
 
 routerAuth.get("/session/logout", logoutUser);
-//  (req, res) => {
-
-// console.log(req.session);
-// req.session.destroy((err) => {
-//   if (err) {
-//     console.log('Error destroying session:', err);
-//     return res.status(500).send({ status: 'error', message: 'Internal Server Error' });
-//   }
-
-//   res.clearCookie('connect.sid');
-//   res.send({ status: 'success', message: 'Session destroyed' });
-// });
-
-// if (req.session.login) {
-//   req.session.destroy(() => {
-//     console.log("Session destroyed");
-//     res.send({ status: "success", message: "Session destroyed" });
-//     //res.redirect("../");
-//   });
-//   return;
-// }
-// res.send({ status: "error", message: "No session" });
-//res.redirect("../");
-// });
 
 routerAuth.get("/users", passportError("jwt"), authorization(), getUsers);
 
