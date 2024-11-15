@@ -26,17 +26,25 @@ import { winstonLogger } from "./utils/logger.js";
 // inicializaciones
 const app = express();
 
-const whiteList = ["http://localhost:8080", process.env.FRONT_PUBLIC_URL, process.env.NEXT_PUBLIC_EVEREST_FRONT, process.env.NEXT_PUBLIC_EVEREST_FRONT_TWO]; //Rutas validas a mi servidor
-console.log(whiteList);
+const whiteList = [
+  "http://localhost:8080",
+  process.env.FRONT_PUBLIC_URL,
+  process.env.NEXT_PUBLIC_EVEREST_FRONT,
+  process.env.NEXT_PUBLIC_EVEREST_FRONT_TWO
+].filter(Boolean);
+
+console.log("WhiteList:", whiteList);
+
 const corsOptions = {
-  //Reviso si el cliente que intenta ingresar a mi servidor esta o no en esta lista
   origin: (origin, callback) => {
-    if (!origin || whiteList.indexOf(origin) !== -1) {
+    console.log(`Incoming origin: ${origin}`);
+    if (!origin || whiteList.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by Cors"));
+      console.error(`Blocked by CORS: ${origin}`);
+      callback(new Error("Not allowed by CORS"));
     }
-  },
+  }
 };
 
 const managerMessage = new MessageMongo();
