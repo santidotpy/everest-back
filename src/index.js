@@ -27,7 +27,7 @@ import { winstonLogger } from "./utils/logger.js";
 const app = express();
 
 const whiteList = ["http://localhost:8080", process.env.FRONT_PUBLIC_URL, process.env.NEXT_PUBLIC_EVEREST_FRONT, process.env.NEXT_PUBLIC_EVEREST_FRONT_TWO]; //Rutas validas a mi servidor
-
+console.log(whiteList);
 const corsOptions = {
   //Reviso si el cliente que intenta ingresar a mi servidor esta o no en esta lista
   origin: (origin, callback) => {
