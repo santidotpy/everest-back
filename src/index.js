@@ -33,15 +33,11 @@ const whiteList = [
   process.env.NEXT_PUBLIC_EVEREST_FRONT_TWO
 ].filter(Boolean);
 
-console.log("WhiteList:", whiteList);
-
 const corsOptions = {
   origin: (origin, callback) => {
-    console.log(`Incoming origin: ${origin}`);
     if (!origin || whiteList.includes(origin)) {
       callback(null, true);
     } else {
-      console.error(`Blocked by CORS: ${origin}`);
       callback(new Error("Not allowed by CORS"));
     }
   }
