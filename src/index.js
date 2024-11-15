@@ -52,6 +52,7 @@ const managerMessage = new MessageMongo();
 app.set("port", process.env.PORT || 5000);
 app.use(express.json());
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 // COOKIES
 app.use(cookieParser(process.env.PRIVATE_KEY_JWT));
